@@ -70,6 +70,20 @@ task multiSpansContextTracing(type: CreateStartScripts) {
     classpath = jar.outputs.files + project.configurations.runtime
 }
 
+task manualContextPropagation(type: CreateStartScripts) {
+    mainClassName = 'io.opencensus.examples.trace.ManualContextPropagation'
+    applicationName = 'ManualContextPropagation'
+    outputDir = new File(project.buildDir, 'tmp')
+    classpath = jar.outputs.files + project.configurations.runtime
+}
+
+task automaticContextPropagation(type: CreateStartScripts) {
+    mainClassName = 'io.opencensus.examples.trace.AutomaticContextPropagation'
+    applicationName = 'AutomaticContextPropagation'
+    outputDir = new File(project.buildDir, 'tmp')
+    classpath = jar.outputs.files + project.configurations.runtime
+}
+
 task zPagesTester(type: CreateStartScripts) {
     mainClassName = 'io.opencensus.examples.zpages.ZPagesTester'
     applicationName = 'ZPagesTester'
@@ -81,6 +95,8 @@ applicationDistribution.into('bin') {
     from(multiSpansTracing)
     from(multiSpansScopedTracing)
     from(multiSpansContextTracing)
+    from(manualContextPropagation)
+    from(automaticContextPropagation)
     from(statsRunner)
     from(zPagesTester)
     fileMode = 0755
