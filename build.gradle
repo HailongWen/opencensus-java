@@ -65,6 +65,14 @@ subprojects {
         }
     }
 
+    configurations {
+        docsnippet
+    }
+
+    dependencies {
+        docsnippet 'org.apidesign.javadoc:codesnippet-doclet:0.22'
+    }
+
     [compileJava, compileTestJava].each() {
         // We suppress the "processing" warning as suggested in
         // https://groups.google.com/forum/#!topic/bazel-discuss/_R3A9TJSoPM
@@ -129,6 +137,10 @@ subprojects {
     javadoc.options {
         encoding = 'UTF-8'
         links 'https://docs.oracle.com/javase/8/docs/api/'
+        doclet = 'org.apidesign.javadoc.codesnippet.Doclet'
+        docletpath = configurations.docsnippet.files.asType(List)
+        addStringOption('snippetpath', "${rootDir}/examples/src/main/java")
+        addStringOption('maxLineLength', "100")
     }
 
     ext {
