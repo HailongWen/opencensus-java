@@ -37,36 +37,15 @@ import javax.annotation.Nullable;
  *
  * <p>Example usage with automatic context propagation:
  *
- * <pre>{@code
- * class MyClass {
- *   private static final Tracer tracer = Tracing.getTracer();
- *   void doWork() {
- *     try(Scope ss = tracer.spanBuilder("MyClass.DoWork").startScopedSpan) {
- *       tracer.getCurrentSpan().addAnnotation("Starting the work.");
- *       doWorkInternal();
- *       tracer.getCurrentSpan().addAnnotation("Finished working.");
- *     }
- *   }
- * }
- * }</pre>
+ * <p>{@codesnippet AutomaticContextPropagation#tracer}
+ *
+ * <p>{@codesnippet AutomaticContextPropagation#doWork}
  *
  * <p>Example usage with manual context propagation:
  *
- * <pre>{@code
- * class MyClass {
- *   private static final Tracer tracer = Tracing.getTracer();
- *   void doWork(Span parent) {
- *     Span childSpan = tracer.spanBuilderWithExplicitParent("MyChildSpan", parent).startSpan();
- *     childSpan.addAnnotation("Starting the work.");
- *     try {
- *       doSomeWork(childSpan); // Manually propagate the new span down the stack.
- *     } finally {
- *       // To make sure we end the span even in case of an exception.
- *       childSpan.end();  // Manually end the span.
- *     }
- *   }
- * }
- * }</pre>
+ * <p>{@codesnippet ManualContextPropagation#tracer}
+ *
+ * <p>{@codesnippet ManualContextPropagation#doWork}
  *
  * @since 0.5
  */
@@ -110,39 +89,14 @@ public abstract class Tracer {
    *
    * <p>Example of usage:
    *
-   * <pre>{@code
-   * private static Tracer tracer = Tracing.getTracer();
-   * void doWork() {
-   *   // Create a Span as a child of the current Span.
-   *   Span span = tracer.spanBuilder("my span").startSpan();
-   *   try (Scope ws = tracer.withSpan(span)) {
-   *     tracer.getCurrentSpan().addAnnotation("my annotation");
-   *     doSomeOtherWork();  // Here "span" is the current Span.
-   *   }
-   *   span.end();
-   * }
-   * }</pre>
+   * <p>{@codesnippet AutomaticContextPropagation#doSomeWork}
    *
    * <p>Prior to Java SE 7, you can use a finally block to ensure that a resource is closed
    * regardless of whether the try statement completes normally or abruptly.
    *
    * <p>Example of usage prior to Java SE7:
    *
-   * <pre>{@code
-   * private static Tracer tracer = Tracing.getTracer();
-   * void doWork() {
-   *   // Create a Span as a child of the current Span.
-   *   Span span = tracer.spanBuilder("my span").startSpan();
-   *   Scope ws = tracer.withSpan(span);
-   *   try {
-   *     tracer.getCurrentSpan().addAnnotation("my annotation");
-   *     doSomeOtherWork();  // Here "span" is the current Span.
-   *   } finally {
-   *     ws.close();
-   *   }
-   *   span.end();
-   * }
-   * }</pre>
+   * <p>{@codesnippet AutomaticContextPropagation#doSomeWorkPriorJava7}
    *
    * @param span The {@link Span} to be set to the current Context.
    * @return an object that defines a scope where the given {@link Span} will be set to the current

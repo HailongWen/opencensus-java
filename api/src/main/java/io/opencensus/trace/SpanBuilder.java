@@ -31,19 +31,9 @@ import javax.annotation.Nullable;
  * <p>This is a simple example where all the work is being done within a single scope and a single
  * thread and the Context is automatically propagated:
  *
- * <pre>{@code
- * class MyClass {
- *   private static final Tracer tracer = Tracing.getTracer();
- *   void doWork {
- *     // Create a Span as a child of the current Span.
- *     try (Scope ss = tracer.spanBuilder("MyChildSpan").startScopedSpan()) {
- *       tracer.getCurrentSpan().addAnnotation("my annotation");
- *       doSomeWork();  // Here the new span is in the current Context, so it can be used
- *                      // implicitly anywhere down the stack.
- *     }
- *   }
- * }
- * }</pre>
+ * <p>{@codesnippet AutomaticContextPropagation#tracer}
+ *
+ * <p>{@codesnippet AutomaticContextPropagation#doWork}
  *
  * <p>There might be cases where you do not perform all the work inside one static scope and the
  * Context is automatically propagated:
@@ -86,21 +76,7 @@ import javax.annotation.Nullable;
  * <p>This is a simple example where all the work is being done within a single scope and the
  * Context is manually propagated:
  *
- * <pre>{@code
- * class MyClass {
- *   private static final Tracer tracer = Tracing.getTracer();
- *   void DoWork(Span parent) {
- *     Span childSpan = tracer.spanBuilderWithExplicitParent("MyChildSpan", parent).startSpan();
- *     childSpan.addAnnotation("my annotation");
- *     try {
- *       doSomeWork(childSpan); // Manually propagate the new span down the stack.
- *     } finally {
- *       // To make sure we end the span even in case of an exception.
- *       childSpan.end();  // Manually end the span.
- *     }
- *   }
- * }
- * }</pre>
+ * <p>{@codesnippet ManualContextPropagation#doWork}
  *
  * <p>If your Java version is less than Java SE 7, see {@link SpanBuilder#startSpan} and {@link
  * SpanBuilder#startScopedSpan} for usage examples.
@@ -150,21 +126,9 @@ public abstract class SpanBuilder {
    *
    * <p>Example of usage:
    *
-   * <pre>{@code
-   * class MyClass {
-   *   private static final Tracer tracer = Tracing.getTracer();
-   *   void DoWork(Span parent) {
-   *     Span childSpan = tracer.spanBuilderWithExplicitParent("MyChildSpan", parent).startSpan();
-   *     childSpan.addAnnotation("my annotation");
-   *     try {
-   *       doSomeWork(childSpan); // Manually propagate the new span down the stack.
-   *     } finally {
-   *       // To make sure we end the span even in case of an exception.
-   *       childSpan.end();  // Manually end the span.
-   *     }
-   *   }
-   * }
-   * }</pre>
+   * <p>{@codesnippet AutomaticContextPropagation#tracer}
+   *
+   * <p>{@codesnippet ManualContextPropagation#doSomeWork}
    *
    * @return the newly created {@code Span}.
    * @since 0.5
@@ -183,20 +147,9 @@ public abstract class SpanBuilder {
    *
    * <p>Example of usage:
    *
-   * <pre>{@code
-   * class MyClass {
-   *   private static final Tracer tracer = Tracing.getTracer();
-   *   void doWork {
-   *     // Create a Span as a child of the current Span.
-   *     try (Scope ss = tracer.spanBuilder("MyChildSpan").startScopedSpan()) {
-   *       tracer.getCurrentSpan().addAnnotation("my annotation");
-   *       doSomeWork();  // Here the new span is in the current Context, so it can be used
-   *                      // implicitly anywhere down the stack. Anytime in this closure the span
-   *                      // can be accessed via tracer.getCurrentSpan().
-   *     }
-   *   }
-   * }
-   * }</pre>
+   * <p>{@codesnippet AutomaticContextPropagation#tracer}
+   *
+   * <p>{@codesnippet AutomaticContextPropagation#doWork}
    *
    * <p>Prior to Java SE 7, you can use a finally block to ensure that a resource is closed (the
    * {@code Span} is ended and removed from the Context) regardless of whether the try statement
@@ -204,23 +157,9 @@ public abstract class SpanBuilder {
    *
    * <p>Example of usage prior to Java SE7:
    *
-   * <pre>{@code
-   * class MyClass {
-   *   private static Tracer tracer = Tracing.getTracer();
-   *   void doWork {
-   *     // Create a Span as a child of the current Span.
-   *     Scope ss = tracer.spanBuilder("MyChildSpan").startScopedSpan();
-   *     try {
-   *       tracer.getCurrentSpan().addAnnotation("my annotation");
-   *       doSomeWork();  // Here the new span is in the current Context, so it can be used
-   *                      // implicitly anywhere down the stack. Anytime in this closure the span
-   *                      // can be accessed via tracer.getCurrentSpan().
-   *     } finally {
-   *       ss.close();
-   *     }
-   *   }
-   * }
-   * }</pre>
+   * <p>{@codesnippet AutomaticContextPropagation#tracer}
+   *
+   * <p>{@codesnippet AutomaticContextPropagation#doWorkPriorJava7}
    *
    * @return an object that defines a scope where the newly created {@code Span} will be set to the
    *     current Context.
