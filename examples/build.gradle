@@ -34,6 +34,10 @@ dependencies {
             "io.opencensus:opencensus-contrib-zpages:${opencensusVersion}",
             "io.opencensus:opencensus-exporter-trace-logging:${opencensusVersion}"
 
+    testCompile "io.opencensus:opencensus-api:${opencensusVersion}",
+                "com.google.http-client:google-http-client:1.24.0-SNAPSHOT-patched",
+		"com.google.truth:truth:0.30"
+
     runtime "io.opencensus:opencensus-impl:${opencensusVersion}"
 }
 
